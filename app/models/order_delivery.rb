@@ -8,7 +8,7 @@ class OrderDelivery
     validates :postal_code, format: {with: /\A[0-9]{3}-[0-9]{4}\z/, message: "is invalid. Include hyphen(-)"}
     validates :city
     validates :address
-    validates :phone, format: {with: /\A[0-9]{10,11}\z/, message: "is invalid. Not include hyphen(-)"}
+    validates :phone, format: {with: /\A[0-9]{10,11}\z/, message: "is invalid."}
   end
   validates :prefecture_id, numericality: {other_than: 1 , message: "can't be blank"} 
 
