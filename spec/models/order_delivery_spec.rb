@@ -4,7 +4,7 @@ RSpec.describe OrderDelivery, type: :model do
   before do
     item = FactoryBot.create(:item)
     buyer = FactoryBot.create(:user)
-    @order_delivery = FactoryBot.build(:order_delivery, user_id: buyer.id, item_id: item.id, price: item.price)
+    @order_delivery = FactoryBot.build(:order_delivery, user_id: buyer.id, item_id: item.id)
   end
 
   describe "商品購入" do
@@ -68,6 +68,11 @@ RSpec.describe OrderDelivery, type: :model do
         @order_delivery.valid?
         expect(@order_delivery.errors.full_messages).to include("Phone is too short")
       end
+      it "phoneは12桁以上だと購入できない" do
+        @order_delivery.phone = "123456789012"
+        @order_delivery.valid?
+        expect(@order_delivery.errors.full_messages).to include("Phone is too short")
+      end
       it "購入品が紐づいていないと購入できない" do
         @order_delivery.user_id = nil
         @order_delivery.valid?
@@ -82,11 +87,6 @@ RSpec.describe OrderDelivery, type: :model do
         @order_delivery.token = nil
         @order_delivery.valid?
         expect(@order_delivery.errors.full_messages).to include("Token can't be blank")
-      end
-      it "priceが空では購入できない" do
-        @order_delivery.price = nil
-        @order_delivery.valid?
-        expect(@order_delivery.errors.full_messages).to include("Price can't be blank")
       end
     end
   end
